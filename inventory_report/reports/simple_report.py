@@ -1,5 +1,6 @@
 from statistics import mode
 
+
 class SimpleReport:
     @classmethod
     def generate(cls, data):
