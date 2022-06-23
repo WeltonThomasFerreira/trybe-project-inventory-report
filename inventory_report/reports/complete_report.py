@@ -21,6 +21,6 @@ class CompleteReport(SimpleReport):
 
         return (
             simple_report
-            + f"\nProdutos estocados por empresa:\n"
+            + "\nProdutos estocados por empresa:\n"
             + str_complete_report
         )
