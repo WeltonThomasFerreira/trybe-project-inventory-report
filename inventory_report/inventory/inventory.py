@@ -1,5 +1,6 @@
 import csv
 import json
+import xmltodict
 from inventory_report.reports.simple_report import SimpleReport
 from inventory_report.reports.complete_report import CompleteReport
 
@@ -9,14 +10,16 @@ class Inventory:
     def import_data(cls, path, report_type):
         if ".csv" in path:
             return cls.csv_reader(path, report_type)
-        if '.json' in path:
+        if ".json" in path:
             return cls.json_reader(path, report_type)
+        if ".xml" in path:
+            return cls.xml_reader(path, report_type)
 
     @classmethod
     def csv_reader(cls, path, report_type):
         data = []
-        with open(path, newline="") as file:
-            reader = csv.DictReader(file, delimiter=",", quotechar='"')
+        with open(path) as file:
+            reader = csv.DictReader(file)
             for row in reader:
                 data.append(row)
         return cls.generate(data, report_type)
@@ -25,6 +28,14 @@ class Inventory:
     def json_reader(cls, path, report_type):
         with open(path) as file:
             data = json.load(file)
+        return cls.generate(data, report_type)
+
+    @classmethod
+    def xml_reader(cls, path, report_type):
+        with open(path) as file:
+            reader = file.read()
+            data = xmltodict.parse(reader)
+            data = data['dataset']['record']
         return cls.generate(data, report_type)
 
     @classmethod
