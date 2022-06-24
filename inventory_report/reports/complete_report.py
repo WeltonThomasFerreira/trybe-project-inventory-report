@@ -5,19 +5,11 @@ class CompleteReport(SimpleReport):
     @classmethod
     def generate(cls, data):
         simple_report = super().generate(data)
-        complete_report = {}
         str_complete_report = ""
         companies = list(map(lambda company: company["nome_da_empresa"], data))
 
-        for company in set(companies):
-            complete_report[company] = companies.count(company)
-
-        complete_report = sorted(
-            complete_report.items(), key=lambda x: x[1], reverse=True
-        )
-
-        for company in complete_report:
-            str_complete_report += f"- {company[0]}: {company[1]}\n"
+        for company in list(dict.fromkeys(companies)):
+            str_complete_report += f"- {company}: {companies.count(company)}\n"
 
         return (
             simple_report
