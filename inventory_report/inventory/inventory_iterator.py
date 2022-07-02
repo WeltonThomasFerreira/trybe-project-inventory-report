@@ -2,12 +2,15 @@ from collections.abc import Iterator
 
 
 class InventoryIterator(Iterator):
-    def __init__(self, importer, data):
-        self.importer = importer
-        self.data = data
+    def __init__(self, data):
+        self.__data = data
+        self.__index = 0
 
     def __next__(self):
-        data = self.importer.import_data(self.data)
-        if not data:
+        try:
+            current_value = self.__data[self.__index]
+        except IndexError:
             raise StopIteration()
-        return data[0]
+        else:
+            self.__index += 1
+            return current_value
